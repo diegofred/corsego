@@ -22,6 +22,11 @@ end
 
 PublicActivity.enabled = false
 
+Lesson.delete_all
+Chapter.delete_all
+Enrollment.delete_all
+Course.delete_all
+
 5.times do
   Course.create!([{
     title: Faker::Educator.course_name,
@@ -52,19 +57,22 @@ end
   }])
 end
 
+
+
+byebug
 Course.all.each do |course|
+  puts "Eval curse #{course.id}"
+  chapter = Chapter.create!( course: course, title: Faker::Lorem.sentence(word_count: 3))
   10.times do
     Lesson.create!([{
       title: Faker::Lorem.sentence(word_count: 3),
       content: Faker::Lorem.sentence,
-      course: course
+      course: course, 
+      chapter: chapter
     }])
   end
 
-  Enrollment.create!([{
-    user: User.find_by(email: "studentteacher@example.com"),
-    course: course
-  }])
+
 
   Enrollment.create!([{
     user: User.find_by(email: "student@example.com"),
